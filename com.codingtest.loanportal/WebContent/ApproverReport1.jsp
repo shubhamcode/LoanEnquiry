@@ -32,6 +32,13 @@
 	<div class="row">
 		<div class="col-sm-12"><h1 align="center">Welcome Approver 1</h1></div>
 	</div>
+	<div class="row">
+		<div class="col-sm-11"></div>
+		<form action="LogoutPage">
+		<div class="col-sm-1"><button type="submit" class="btn btn-group-lg btn-primary">Logout</button></div>
+		</form>
+	</div>
+	
 	
 	<table class="table table-hover">
     <thead>
@@ -42,12 +49,25 @@
 		<th>Loan Amount</th>
 		<th>Interest Rate</th>
 		<th>Status</th>
+		<th></th>
       </tr>
     </thead>
     <tbody>
 	<c:forEach items="${enquiryFetch}" var="enquiry">
 
 <c:choose>
+<c:when test="${enquiry.loanStatus=='APPROVED' or enquiry.loanStatus=='PENDING-2'}">
+		<tr class="active">
+        	<td>${enquiry.enquiryId}</td>
+			<td>${enquiry.customerName}</td>
+			<td>${enquiry.jobType}</td>
+			<td>${enquiry.loanAmount}</td>
+			<td>${enquiry.interestRate}</td>
+			<td>${enquiry.loanStatus}</td>
+			<td></td>
+        
+      	</tr>
+</c:when>
 <c:when test="${enquiry.interestRate>14}">
 		<tr class="info">
         	<td>${enquiry.enquiryId}</td>
@@ -55,10 +75,25 @@
 			<td>${enquiry.jobType}</td>
 			<td>${enquiry.loanAmount}</td>
 			<td>${enquiry.interestRate}</td>
+			<td>${enquiry.loanStatus}</td>
 			<td></td>
         
       	</tr>
 </c:when>
+<c:when test="${enquiry.interestRate<=14 and enquiry.interestRate>=13}">
+		<tr class="danger">
+        	<td>${enquiry.enquiryId}</td>
+			<td>${enquiry.customerName}</td>
+			<td>${enquiry.jobType}</td>
+			<td>${enquiry.loanAmount}</td>
+			<td>${enquiry.interestRate}</td>
+			<td>${enquiry.loanStatus}</td>
+			
+			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}">APPROVE</a></td>
+
+      	</tr>
+</c:when>
+
 <c:otherwise>
 <tr class="warning">
         	<td>${enquiry.enquiryId}</td>
@@ -66,7 +101,8 @@
 			<td>${enquiry.jobType}</td>
 			<td>${enquiry.loanAmount}</td>
 			<td>${enquiry.interestRate}</td>
-			<td></td>
+			<td>${enquiry.loanStatus}</td>
+			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}&flag=${'r2'} ">RECOMMEND</a></td>
         
       	</tr>
 </c:otherwise>

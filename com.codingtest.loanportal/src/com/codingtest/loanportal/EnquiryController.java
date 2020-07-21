@@ -18,16 +18,16 @@ public class EnquiryController extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		PrintWriter out=response.getWriter();
-		
 		HttpSession sess=request.getSession();
+		
+		
 		if(sess.getAttribute("userName")==null)
 			response.sendRedirect("index.jsp");
-
+		
 		
 		
 		
 		LoginDAO ldo=new LoginDAO();
-		
 			 
 		if((sess.getAttribute("userRole").toString()).equals("1"))
 		{	
@@ -40,13 +40,19 @@ public class EnquiryController extends HttpServlet{
 			  double amt=Double.parseDouble(request.getParameter("lamount"));
 			  double interest=Double.parseDouble(request.getParameter("irate"));
 			  
-			  ldo.createEnquiry(enqid, name,job,amt,interest);
+			  
 			  
 			  if(interest > 14) 
+			  { 
+				  ldo.createEnquiry(enqid, name,job,amt,interest,"AUTOAPPROVED");
 				  out.println("<h1 align='center'> Auto Approved"); 
+			  }
 			  else 
-				  out.println("Enquiry submitted succesfully!!! \n Your request is under process. "
-			  );
+			  {
+				  ldo.createEnquiry(enqid, name,job,amt,interest,"PENDING");
+				  out.println("Enquiry submitted succesfully!!! \n Your request is under process. ");
+			      
+			  }
 		} 
 		else
 		{

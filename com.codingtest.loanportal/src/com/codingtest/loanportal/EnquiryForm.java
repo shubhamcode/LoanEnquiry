@@ -12,6 +12,15 @@ public class EnquiryForm {
 	private String jobType;
 	private double loanAmount;
 	private double interestRate;
+	private String loanStatus;
+	
+	
+	public String getLoanStatus() {
+		return loanStatus;
+	}
+	public void setLoanStatus(String loanStatus) {
+		this.loanStatus = loanStatus;
+	}
 	public int getEnquiryId() {
 		return enquiryId;
 	}
@@ -45,9 +54,8 @@ public class EnquiryForm {
 	@Override
 	public String toString() {
 		return "EnquiryForm [enquiryId=" + enquiryId + ", customerName=" + customerName + ", jobType=" + jobType
-				+ ", loanAmount=" + loanAmount + ", interestRate=" + interestRate + "]";
+				+ ", loanAmount=" + loanAmount + ", interestRate=" + interestRate + ", loanStatus=" + loanStatus + "]";
 	}
-	
 	
 	
 	

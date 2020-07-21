@@ -27,7 +27,13 @@
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-12"><h1 align="center">ENQUIRY FORM</h1></div>
+		<div class="col-sm-11"><h1 align="center">ENQUIRY FORM</h1></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-11"></div>
+		<form action="LogoutPage">
+		<div class="col-sm-1"><button type="submit" class="btn btn-group-lg btn-primary">Logout</button></div>
+		</form>
 	</div>
 	<form class="form-horizontal" action="EnquiryController" method="GET">
 		<div class="form-group form-row">
@@ -53,7 +59,11 @@
       			<div class="col-sm-4"></div>
 				
       			<div class="col-sm-4">          
-        			<input type="text" class="form-control"  name="jobtype" placeholder="Job Type" required>
+        			<select class="form-control" name="jobtype" placeholder="Job Type" required>
+        			<option value="" selected disabled>Job Type</option>
+        			<option value="Saleried">Salaried</option>
+        			<option value="Selfemp">Self Employed</option>
+        			</select>
       			</div>
       			
       			<div class="col-sm-4"></div>
