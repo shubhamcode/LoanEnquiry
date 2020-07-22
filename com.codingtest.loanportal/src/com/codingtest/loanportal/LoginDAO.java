@@ -17,6 +17,16 @@ import org.hibernate.service.ServiceRegistry;
 
 public class LoginDAO {
 
+	Configuration con=new Configuration().configure().addAnnotatedClass(EnquiryForm.class);
+	ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(con.getProperties()).build();
+	
+	SessionFactory sf=con.buildSessionFactory(registry);
+	
+	Session session=sf.openSession();
+	
+	Transaction txn=session.beginTransaction();
+	
+	
 	public boolean createEnquiry(int enqid,String cname,String job,double amt,double rate,String status)
 	{
 		
@@ -29,14 +39,6 @@ public class LoginDAO {
 		ef.setLoanStatus(status);
 		 
 		
-		Configuration con=new Configuration().configure().addAnnotatedClass(EnquiryForm.class);
-		ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(con.getProperties()).build();
-		
-		SessionFactory sf=con.buildSessionFactory(registry);
-		
-		Session session=sf.openSession();
-		
-		Transaction txn=session.beginTransaction();
 		
 		try
 		{
@@ -44,16 +46,20 @@ public class LoginDAO {
 		}
 		catch(Exception e)
 		{
-			System.out.println("ALREADY EXIST");
+			System.out.println(e.getMessage());
+			return false;
 			
 		}
 		
 		
-		System.out.println("GOT TTTTTT----"+ef);
-		
 		txn.commit();
+			
 		
-			return false;
+		
+		
+		return true;
+		
+		
 
 		
 		
@@ -88,19 +94,18 @@ public class LoginDAO {
 		
 	}
 	
-	public List<EnquiryForm> getEnquiry()
+	public List<EnquiryForm> getEnquiry(String role)
 	{
 			
-		Configuration con=new Configuration().configure().addAnnotatedClass(EnquiryForm.class);
-		ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(con.getProperties()).build();
+		Query query;
 		
-		SessionFactory sf=con.buildSessionFactory(registry);
-		
-		Session session=sf.openSession();
-		
-		Transaction txn=session.beginTransaction();
-		
-		Query query=session.createQuery("from EnquiryForm");
+		if(role.equals("2"))
+			query=session.createQuery("from EnquiryForm");
+		else if(role.equals("3"))
+			query=session.createQuery("from EnquiryForm where loanStatus not in ('APPROVED','AUTOAPPROVED')");
+		else
+			query=session.createQuery("from EnquiryForm where loanStatus not in ('APPROVED','AUTOAPPROVED')");
+		//Query query=session.createQuery("from EnquiryForm");
 		List<EnquiryForm> enq=query.list();
 
 		txn.commit();
@@ -117,22 +122,18 @@ public class LoginDAO {
 		
 		
 		
-		Configuration con=new Configuration().configure().addAnnotatedClass(EnquiryForm.class);
-		ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(con.getProperties()).build();
-		
-		SessionFactory sf=con.buildSessionFactory(registry);
-		
-		Session session=sf.openSession();
-		
-		Transaction txn=session.beginTransaction();
-		
+				
 		try
 		{
 			
 			  EnquiryForm ef=session.load(EnquiryForm.class,enqid); 
 			  if(flag.equals("r2"))
 				  ef.setLoanStatus("PENDING-2");
-			  else ef.setLoanStatus("APPROVED");
+			  else if(flag.equals("r3"))
+				  ef.setLoanStatus("PENDING-3");
+			  
+			  else
+				  ef.setLoanStatus("APPROVED");
 			  
 			  session.update(ef);
 			 
@@ -154,6 +155,25 @@ public class LoginDAO {
 		
 		
 	}
+	
+	public List<EnquiryForm> getDuplicateEnquiry(int enqid)
+	{
+			
+		Query query;
+		
+		
+			query=session.createQuery("from EnquiryForm where enquiryId="+enqid);
+		
+			List<EnquiryForm> enq=query.list();
+
+		txn.commit();
+
+		return enq;
+		
+		
+		
+	}
+
 
 	
 	

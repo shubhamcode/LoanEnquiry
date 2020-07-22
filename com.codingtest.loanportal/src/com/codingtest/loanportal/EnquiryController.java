@@ -33,38 +33,69 @@ public class EnquiryController extends HttpServlet{
 		{	
 			
 			
-			  System.out.println("yaha to aaya enqid-"+request.getParameter("eqid")); 
+			
+			
 			  int enqid= Integer.parseInt(request.getParameter("eqid"));
 			  String name=request.getParameter("cname"); 
 			  String job=request.getParameter("jobtype");
 			  double amt=Double.parseDouble(request.getParameter("lamount"));
 			  double interest=Double.parseDouble(request.getParameter("irate"));
 			  
-			  
-			  
-			  if(interest > 14) 
-			  { 
-				  ldo.createEnquiry(enqid, name,job,amt,interest,"AUTOAPPROVED");
-				  out.println("<h1 align='center'> Auto Approved"); 
-			  }
-			  else 
+			  if(ldo.getDuplicateEnquiry(enqid).isEmpty())
 			  {
-				  ldo.createEnquiry(enqid, name,job,amt,interest,"PENDING");
-				  out.println("Enquiry submitted succesfully!!! \n Your request is under process. ");
-			      
+				  
+				  if(interest > 14) 
+				  { 
+					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"AUTOAPPROVED"))
+					  {
+						  sess.setAttribute("enquirystatus", "1");
+						  response.sendRedirect("EnquiryForm.jsp");
+					  }
+					  else
+						  out.println("Some Problem Occured");
+				  }
+				  else 
+				  {
+					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"PENDING"))
+					  {
+						  sess.setAttribute("enquirystatus", "2");
+						  response.sendRedirect("EnquiryForm.jsp");
+					  }
+					  else
+						  out.println("Some Problem Occured");
+					  
+				  }
+				  
+				  
+				  
 			  }
+			  
+			  else
+			  {
+				  sess.setAttribute("enquirystatus", "3");
+				  response.sendRedirect("EnquiryForm.jsp");
+			  }
+			   
+			  
 		} 
 		else
 		{
+		
+			String role=sess.getAttribute("userRole").toString();
 			
-			List<EnquiryForm> enqForm=ldo.getEnquiry();
+			List<EnquiryForm> enqForm=ldo.getEnquiry(role);
 			
 			
 			
 			sess.setAttribute("enquiryFetch", enqForm);
 			
-			response.sendRedirect("ApproverReport1.jsp");
-			
+			if(role.equals("2"))
+				response.sendRedirect("ApproverReport2.jsp");
+			else if (role.equals("3"))
+				response.sendRedirect("ApproverReport3.jsp");
+			else
+				response.sendRedirect("ApproverReport4.jsp");
+
 		}
 		 			
 			

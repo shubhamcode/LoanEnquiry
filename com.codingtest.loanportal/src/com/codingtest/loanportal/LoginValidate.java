@@ -36,7 +36,7 @@ public class LoginValidate  extends HttpServlet {
 		  response.sendRedirect("EnquiryForm.jsp");
 	  } 
 		  
-	else if(role==2)
+	else if(role==2 || role==3 || role==4)
 	  {
 		  
 		  ses.setAttribute("userName", user);
@@ -45,10 +45,14 @@ public class LoginValidate  extends HttpServlet {
 		  response.sendRedirect("EnquiryController");
 		  
 	  }
+	  
+	  
 	else
-		  out.println("Incorrect Credentials!!!");
+	{
+		ses.setAttribute("statusmgs","Not a Valid User");
+		response.sendRedirect("index.jsp");
 		  
-		 
+	}	 
 		 	
 	}
 

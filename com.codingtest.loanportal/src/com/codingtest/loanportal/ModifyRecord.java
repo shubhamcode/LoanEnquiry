@@ -28,11 +28,10 @@ public class ModifyRecord extends HttpServlet {
 		String flag=request.getParameter("flag");
 		
 		
-		
 		  LoginDAO ldo=new LoginDAO(); 
 		  if(ldo.updateEnquiry(eqid,flag))
 			  response.sendRedirect("EnquiryController"); 
-		  else out.println("Fataaaaa");
+		  else out.println("Some Problem Occured");
 		 
 	
 	}

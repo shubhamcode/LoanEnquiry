@@ -20,7 +20,7 @@
  
 
 
-<title>Approver1</title>
+<title>Approver4</title>
 <% 
   	HttpSession sess=request.getSession();
 	if(sess.getAttribute("userName")==null)
@@ -30,7 +30,7 @@
 <body>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-12"><h1 align="center">Welcome Approver 1</h1></div>
+		<div class="col-sm-12"><h1 align="center">Welcome Approver 4</h1></div>
 	</div>
 	<div class="row">
 		<div class="col-sm-11"></div>
@@ -56,7 +56,7 @@
 	<c:forEach items="${enquiryFetch}" var="enquiry">
 
 <c:choose>
-<c:when test="${enquiry.loanStatus=='APPROVED' or enquiry.loanStatus=='PENDING-2'}">
+<c:when test="${enquiry.loanStatus=='APPROVED'}">
 		<tr class="active">
         	<td>${enquiry.enquiryId}</td>
 			<td>${enquiry.customerName}</td>
@@ -68,42 +68,17 @@
         
       	</tr>
 </c:when>
-<c:when test="${enquiry.interestRate>14}">
-		<tr class="info">
-        	<td>${enquiry.enquiryId}</td>
-			<td>${enquiry.customerName}</td>
-			<td>${enquiry.jobType}</td>
-			<td>${enquiry.loanAmount}</td>
-			<td>${enquiry.interestRate}</td>
-			<td>${enquiry.loanStatus}</td>
-			<td></td>
-        
-      	</tr>
-</c:when>
-<c:when test="${enquiry.interestRate<=14 and enquiry.interestRate>=13}">
-		<tr class="danger">
-        	<td>${enquiry.enquiryId}</td>
-			<td>${enquiry.customerName}</td>
-			<td>${enquiry.jobType}</td>
-			<td>${enquiry.loanAmount}</td>
-			<td>${enquiry.interestRate}</td>
-			<td>${enquiry.loanStatus}</td>
-			
-			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}">APPROVE</a></td>
-
-      	</tr>
-</c:when>
 
 <c:otherwise>
-<tr class="warning">
+<tr class="danger">
         	<td>${enquiry.enquiryId}</td>
 			<td>${enquiry.customerName}</td>
 			<td>${enquiry.jobType}</td>
 			<td>${enquiry.loanAmount}</td>
 			<td>${enquiry.interestRate}</td>
 			<td>${enquiry.loanStatus}</td>
-			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}&flag=${'r2'} ">RECOMMEND</a></td>
-        
+			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}&flag=${'a'}">APPROVE</a></td>
+
       	</tr>
 </c:otherwise>
 
@@ -119,34 +94,5 @@
 
 
 
-
-<%-- 
-<table border="1" align="center">
-<tr>
-	<th>Enquiry Id</th>
-	<th>Customer Name</th>
-	<th>Job Type</th>
-	<th>Loan Amount</th>
-	<th>Int Rate%</th>
-	<th>Status</th>
-</tr>
-
-<c:forEach items="${enquiryFetch}" var="enquiry">
-<tr>
-	
-	<td>${enquiry.enquiryId}</td>
-	<td>${enquiry.customerName}</td>
-	<td>${enquiry.jobType}</td>
-	<td>${enquiry.loanAmount}</td>
-	<td>${enquiry.interestRate}</td>
-	<td></td>
-</c:forEach>
-
-
-	
-</table>
-
-
- --%>
  </body>
 </html>
