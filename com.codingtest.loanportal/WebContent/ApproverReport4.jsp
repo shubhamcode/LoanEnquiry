@@ -22,6 +22,11 @@
 
 <title>Approver4</title>
 <% 
+
+response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+response.setHeader("Pragma", "no-cache");
+response.setHeader("Expires","0");
+
   	HttpSession sess=request.getSession();
 	if(sess.getAttribute("userName")==null)
 		response.sendRedirect("index.jsp");
@@ -49,27 +54,13 @@
 		<th>Loan Amount</th>
 		<th>Interest Rate</th>
 		<th>Status</th>
+		<th>Recommendations</th>
 		<th></th>
       </tr>
     </thead>
     <tbody>
 	<c:forEach items="${enquiryFetch}" var="enquiry">
 
-<c:choose>
-<c:when test="${enquiry.loanStatus=='APPROVED'}">
-		<tr class="active">
-        	<td>${enquiry.enquiryId}</td>
-			<td>${enquiry.customerName}</td>
-			<td>${enquiry.jobType}</td>
-			<td>${enquiry.loanAmount}</td>
-			<td>${enquiry.interestRate}</td>
-			<td>${enquiry.loanStatus}</td>
-			<td></td>
-        
-      	</tr>
-</c:when>
-
-<c:otherwise>
 <tr class="danger">
         	<td>${enquiry.enquiryId}</td>
 			<td>${enquiry.customerName}</td>
@@ -77,13 +68,33 @@
 			<td>${enquiry.loanAmount}</td>
 			<td>${enquiry.interestRate}</td>
 			<td>${enquiry.loanStatus}</td>
-			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}&flag=${'a'}">APPROVE</a></td>
-
-      	</tr>
+			
+<c:choose>
+<c:when test="${enquiry.rcm1==1 && enquiry.rcm2==1}">
+			<td>R1,R2</td>
+			
+</c:when>
+<c:when test="${enquiry.rcm1==1}">
+			<td>R1</td>
+			
+</c:when>
+<c:when test="${enquiry.rcm2==1}">
+			<td>R2</td>
+</c:when>
+<c:otherwise>
+<td></td>
 </c:otherwise>
 
 
 </c:choose>
+			
+			
+			
+			<td><a href="EnquiryController?eqid=${enquiry.enquiryId}&flag=${'a'}">APPROVE</a></td>
+
+      	</tr>
+
+
     </c:forEach>  
     </tbody>
   </table>

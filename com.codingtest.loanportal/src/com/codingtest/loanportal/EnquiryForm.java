@@ -13,8 +13,21 @@ public class EnquiryForm {
 	private double loanAmount;
 	private double interestRate;
 	private String loanStatus;
+	private int rcm1;
+	private int rcm2;
 	
-	
+	public int getRcm1() {
+		return rcm1;
+	}
+	public void setRcm1(int rcm1) {
+		this.rcm1 = rcm1;
+	}
+	public int getRcm2() {
+		return rcm2;
+	}
+	public void setRcm2(int rcm2) {
+		this.rcm2 = rcm2;
+	}
 	public String getLoanStatus() {
 		return loanStatus;
 	}
@@ -54,7 +67,8 @@ public class EnquiryForm {
 	@Override
 	public String toString() {
 		return "EnquiryForm [enquiryId=" + enquiryId + ", customerName=" + customerName + ", jobType=" + jobType
-				+ ", loanAmount=" + loanAmount + ", interestRate=" + interestRate + ", loanStatus=" + loanStatus + "]";
+				+ ", loanAmount=" + loanAmount + ", interestRate=" + interestRate + ", loanStatus=" + loanStatus
+				+ ", rcm1=" + rcm1 + ", rcm2=" + rcm2 + "]";
 	}
 	
 	

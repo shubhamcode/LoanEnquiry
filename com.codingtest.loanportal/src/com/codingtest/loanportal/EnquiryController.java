@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/EnquiryController")
 public class EnquiryController extends HttpServlet{
+	
+	LoginDAO ldo=new LoginDAO();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,8 +28,7 @@ public class EnquiryController extends HttpServlet{
 		
 		
 		
-		
-		LoginDAO ldo=new LoginDAO();
+		//LoginDAO ldo=new LoginDAO();
 			 
 		if((sess.getAttribute("userRole").toString()).equals("1"))
 		{	
@@ -46,7 +47,7 @@ public class EnquiryController extends HttpServlet{
 				  
 				  if(interest > 14) 
 				  { 
-					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"AUTOAPPROVED"))
+					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"AUTOAPPROVED",0,0))
 					  {
 						  sess.setAttribute("enquirystatus", "1");
 						  response.sendRedirect("EnquiryForm.jsp");
@@ -56,7 +57,7 @@ public class EnquiryController extends HttpServlet{
 				  }
 				  else 
 				  {
-					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"PENDING"))
+					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"PENDING",0,0))
 					  {
 						  sess.setAttribute("enquirystatus", "2");
 						  response.sendRedirect("EnquiryForm.jsp");
@@ -80,7 +81,16 @@ public class EnquiryController extends HttpServlet{
 		} 
 		else
 		{
-		
+			
+
+			if(request.getParameter("eqid")!=null)
+				{
+				   int eqid=Integer.parseInt(request.getParameter("eqid"));
+				   String flag=request.getParameter("flag");
+				   if(!ldo.updateEnquiry(eqid,flag))
+					   out.println("Some Problem Occured");
+				 }
+			
 			String role=sess.getAttribute("userRole").toString();
 			
 			List<EnquiryForm> enqForm=ldo.getEnquiry(role);
@@ -102,4 +112,51 @@ public class EnquiryController extends HttpServlet{
 			
 		}
 	
+
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+	  PrintWriter out=response.getWriter();
+	  
+	  
+	  String user=request.getParameter("uid");
+	  String pwd=request.getParameter("pwd");
+	  
+	  //LoginDAO ldo=new LoginDAO();
+	  int  role=ldo.checkLogin(user, pwd);
+	  
+	  HttpSession ses=request.getSession();
+	  
+	  if(role==1)
+	  {
+		  ses.setAttribute("userName", user);
+		  ses.setAttribute("userRole", role);
+		  
+		  response.sendRedirect("EnquiryForm.jsp");
+	  } 
+		  
+	else if(role==2 || role==3 || role==4)
+	  {
+		  
+		  ses.setAttribute("userName", user);
+		  ses.setAttribute("userRole", role);
+		  
+		  response.sendRedirect("EnquiryController");
+		  
+	  }
+	  
+	  
+	else
+	{
+		ses.setAttribute("statusmgs","Not a Valid User");
+		response.sendRedirect("index.jsp");
+		  
+	}	 
+		 	
+	}
+
+
+	
+
 }

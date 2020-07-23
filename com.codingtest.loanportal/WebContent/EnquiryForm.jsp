@@ -22,6 +22,11 @@
 <title>Enquiry Form</title>
 
 <% 
+
+response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+response.setHeader("Pragma", "no-cache");
+response.setHeader("Expires","0");
+
   	HttpSession sess=request.getSession();
 	if(sess.getAttribute("userName")==null)
 		response.sendRedirect("index.jsp");
@@ -112,7 +117,7 @@
 		
 		<c:choose>
 			
-				<c:when test="${enquirystatus=='1'}"><center><span class="text-success">Enquiry got AUTOAPPROVED.</span></center></c:when>
+				<c:when test="${enquirystatus=='1'}"><center><span class="text-success font-weight-bold">Enquiry got AUTOAPPROVED.</span></center></c:when>
 				<c:when test="${enquirystatus=='2'}"><center><span class="text-success font-weight-bold">Enquiry Submitted for Processing.</span></center></c:when>		
 				<c:when test="${enquirystatus=='3'}"><center><span class="text-danger font-weight-bold">Enquiry No.Should Be Unique.</span></center></c:when>		
 

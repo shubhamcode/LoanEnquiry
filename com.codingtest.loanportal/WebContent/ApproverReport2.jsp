@@ -22,6 +22,11 @@
 
 <title>Approver1</title>
 <% 
+
+response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+response.setHeader("Pragma", "no-cache");
+response.setHeader("Expires","0");
+
   	HttpSession sess=request.getSession();
 	if(sess.getAttribute("userName")==null)
 		response.sendRedirect("index.jsp");
@@ -47,8 +52,9 @@
 		<th>Customer Name</th>
 		<th>Job Type</th>
 		<th>Loan Amount</th>
-		<th>Interest Rate</th>
+		<th>Interest</th>
 		<th>Status</th>
+		<th>Recommendations</th>
 		<th></th>
       </tr>
     </thead>
@@ -56,7 +62,7 @@
 	<c:forEach items="${enquiryFetch}" var="enquiry">
 
 <c:choose>
-<c:when test="${enquiry.loanStatus=='APPROVED' or enquiry.loanStatus=='PENDING-2'}">
+<c:when test="${enquiry.loanStatus=='APPROVED'}">
 		<tr class="active">
         	<td>${enquiry.enquiryId}</td>
 			<td>${enquiry.customerName}</td>
@@ -65,7 +71,7 @@
 			<td>${enquiry.interestRate}</td>
 			<td>${enquiry.loanStatus}</td>
 			<td></td>
-        
+        	<td></td>
       	</tr>
 </c:when>
 <c:when test="${enquiry.interestRate>14}">
@@ -76,6 +82,7 @@
 			<td>${enquiry.loanAmount}</td>
 			<td>${enquiry.interestRate}</td>
 			<td>${enquiry.loanStatus}</td>
+			<td></td>
 			<td></td>
         
       	</tr>
@@ -88,8 +95,8 @@
 			<td>${enquiry.loanAmount}</td>
 			<td>${enquiry.interestRate}</td>
 			<td>${enquiry.loanStatus}</td>
-			
-			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}&flag=${'a'}">APPROVE</a></td>
+			<td></td>
+			<td><a href="EnquiryController?eqid=${enquiry.enquiryId}&flag=${'a'}">APPROVE</a></td>
 
       	</tr>
 </c:when>
@@ -102,7 +109,29 @@
 			<td>${enquiry.loanAmount}</td>
 			<td>${enquiry.interestRate}</td>
 			<td>${enquiry.loanStatus}</td>
-			<td><a href="ModifyRecord?eqid=${enquiry.enquiryId}&flag=${'r2'} ">RECOMMEND</a></td>
+
+<c:choose>
+<c:when test="${enquiry.rcm1==1 && enquiry.rcm2==1}">
+			<td>R1,R2</td>
+			<td></td>
+</c:when>
+<c:when test="${enquiry.rcm1==1}">
+			<td>R1</td>
+			<td></td>
+</c:when>
+<c:when test="${enquiry.rcm2==1}">
+			<td>R2</td>
+			<td><a href="EnquiryController?eqid=${enquiry.enquiryId}&flag=${'r2'} ">RECOMMEND</a></td>
+</c:when>
+<c:otherwise>
+<td></td>
+<td><a href="EnquiryController?eqid=${enquiry.enquiryId}&flag=${'r2'} ">RECOMMEND</a></td>
+</c:otherwise>
+
+
+</c:choose>
+
+
         
       	</tr>
 </c:otherwise>

@@ -29,7 +29,7 @@
 	<div class="row">
 		<div class="col-sm-12"><h1 align="center">Login Here</h1></div>
 	</div>
-	<form class="form-horizontal" action="LoginValidate" method="POST" id="formlogin"">
+	<form class="form-horizontal" action="EnquiryController" method="POST" id="formlogin"">
 		<div class="form-group form-row">
       			<div class="col-sm-4"></div>
 				
