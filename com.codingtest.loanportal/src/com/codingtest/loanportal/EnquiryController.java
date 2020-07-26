@@ -40,36 +40,64 @@ public class EnquiryController extends HttpServlet{
 			  String name=request.getParameter("cname"); 
 			  String job=request.getParameter("jobtype");
 			  double amt=Double.parseDouble(request.getParameter("lamount"));
-			  double interest=Double.parseDouble(request.getParameter("irate"));
+			 // String interest=request.getParameter("irate");
 			  
 			  if(ldo.getDuplicateEnquiry(enqid).isEmpty())
 			  {
-				  
-				  if(interest > 14) 
-				  { 
-					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"AUTOAPPROVED",0,0))
-					  {
-						  sess.setAttribute("enquirystatus", "1");
-						  response.sendRedirect("EnquiryForm.jsp");
-					  }
-					  else
-						  out.println("Some Problem Occured");
-				  }
-				  else 
+				
+				  try
 				  {
-					  if(ldo.createEnquiry(enqid, name,job,amt,interest,"PENDING",0,0))
-					  {
-						  sess.setAttribute("enquirystatus", "2");
-						  response.sendRedirect("EnquiryForm.jsp");
-					  }
-					  else
-						  out.println("Some Problem Occured");
-					  
+					  System.out.println(request.getParameter("irate"));
+					   double interest=Double.parseDouble(request.getParameter("irate"));
+
+						  if(interest > 14) 
+						  { 
+							  if(ldo.createEnquiry(enqid, name,job,amt,interest,"AUTOAPPROVED",0,0))
+							  {
+								  sess.setAttribute("enquirystatus", "1");
+								  response.sendRedirect("EnquiryForm.jsp");
+							  }
+							  else
+								  out.println("Some Problem Occured");
+						  }
+						  else 
+						  {
+							  
+							  if(interest<=0)
+							  {
+								  sess.setAttribute("enquirystatus", "4");
+								  response.sendRedirect("EnquiryForm.jsp");
+							  }
+							  else
+							  {
+
+								  if(ldo.createEnquiry(enqid, name,job,amt,interest,"PENDING",0,0))
+								  {
+									  sess.setAttribute("enquirystatus", "2");
+									  response.sendRedirect("EnquiryForm.jsp");
+								  }
+								  else
+									  out.println("Some Problem Occured");
+								    
+							  }
+							  
+						  }
+						  
+				
+					   
+				  }
+				  
+				  catch(Exception e)
+				  {
+					  System.out.println("exception to aagaya hi hai");
+					  sess.setAttribute("enquirystatus", "5");
+					  response.sendRedirect("EnquiryForm.jsp");
 				  }
 				  
 				  
-				  
-			  }
+				  		  
+				  }
+			  
 			  
 			  else
 			  {
@@ -82,7 +110,7 @@ public class EnquiryController extends HttpServlet{
 		else
 		{
 			
-
+			//for modification of records
 			if(request.getParameter("eqid")!=null)
 				{
 				   int eqid=Integer.parseInt(request.getParameter("eqid"));
@@ -90,6 +118,8 @@ public class EnquiryController extends HttpServlet{
 				   if(!ldo.updateEnquiry(eqid,flag))
 					   out.println("Some Problem Occured");
 				 }
+			
+			//View Reports
 			
 			String role=sess.getAttribute("userRole").toString();
 			

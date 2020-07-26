@@ -91,7 +91,7 @@ response.setHeader("Expires","0");
       			<div class="col-sm-4"></div>
 				
       			<div class="col-sm-4">          
-        			<input type="number" class="form-control" name="irate" placeholder="Interest Rate" step="0.01" min="0" max="100" id="irate">
+        			<input type="text" class="form-control" name="irate" placeholder="Interest Rate"  id="irate">
       			</div>
       			
       			<div class="col-sm-4"><span class="text-danger" id="errorIrate"></span></div>
@@ -120,7 +120,9 @@ response.setHeader("Expires","0");
 				<c:when test="${enquirystatus=='1'}"><center><span class="text-success font-weight-bold">Enquiry got AUTOAPPROVED.</span></center></c:when>
 				<c:when test="${enquirystatus=='2'}"><center><span class="text-success font-weight-bold">Enquiry Submitted for Processing.</span></center></c:when>		
 				<c:when test="${enquirystatus=='3'}"><center><span class="text-danger font-weight-bold">Enquiry No.Should Be Unique.</span></center></c:when>		
-
+				<c:when test="${enquirystatus=='4'}"><center><span class="text-danger font-weight-bold">Rate cannot be 0 or less.</span></center></c:when>		
+				<c:when test="${enquirystatus=='5'}"><center><span class="text-danger font-weight-bold">Rate Should be a number</span></center></c:when>		
+								
 				<c:otherwise></c:otherwise>		
 				
 		
@@ -220,7 +222,7 @@ $(function(){
 	
 	function chk_irate(){
 		var irate=$("#irate").val();
-		if(irate==0 )
+		if(false)
 		  {
 
 			$("#errorIrate").html("Rate cannot be 0");
